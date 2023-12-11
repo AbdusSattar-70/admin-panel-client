@@ -6,10 +6,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "../../api/axios";
 
-const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+const USER_REGEX = /^[A-Za-z][A-Za-z0-9_ -]{3,23}$/;
 const PWD_REGEX = /.{1,}/;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const REGISTER_URL = "/auth/signup";
 
 const SignUp = () => {
   const userRef = useRef();
@@ -68,8 +72,15 @@ const SignUp = () => {
     }
 
     try {
+      await axios.post(
+        REGISTER_URL,
+        JSON.stringify({ name: user, email, password: pwd }),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
       setSuccess(true);
-
       // Clear state and controlled inputs
       setUser("");
       setPwd("");
@@ -77,11 +88,15 @@ const SignUp = () => {
       setEmail("");
     } catch (err) {
       if (!err?.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
+        toast.error("No Server Response");
+      } else if (err.response?.status === 400) {
+        toast.error(
+          `${err.response.data?.errors[0]?.msg || "Username or Email Taken"}`
+        );
+      } else if (err.response?.status === 500) {
+        toast.error("Username or Email Taken");
       } else {
-        setErrMsg("Registration Failed");
+        toast.error("Registration Failed");
       }
       errRef.current.focus();
     }
@@ -102,9 +117,14 @@ const SignUp = () => {
         <section>
           <div className="hero hero-content">
             <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+              <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar
+              />
               <p
                 ref={errRef}
-                className={`${errMsg}? text-red-600: hidden`}
+                className={`${errMsg ? "text-red-600 text-center" : "hidden"}`}
                 aria-live="assertive"
               >
                 {errMsg}

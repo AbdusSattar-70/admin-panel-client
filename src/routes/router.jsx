@@ -1,12 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import Root from "../layout/Root";
-import ErrorPage from "../pages/errorPage/ErrorPage";
-import Home from "../pages/home/home/Home";
-import About from "../pages/about/About";
-import SignIn from "../pages/AuthControll/SignIn";
-import SignUp from "../pages/AuthControll/SignUp";
+import ErrorPage from "../components/errorPage/ErrorPage";
+import Home from "../components/home/home/Home";
+import SignIn from "../components/AuthControll/SignIn";
+import SignUp from "../components/AuthControll/SignUp";
 import PrivateRoute from "./PrivateRoute";
-
+import Admin from "../components/adminPanel/Admin";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -18,12 +17,12 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/about",
-        element: <About />,
-      },
-      {
-        path: "/seeall/:id",
-        element: <PrivateRoute></PrivateRoute>,
+        path: "/admin-panel",
+        element: (
+          <PrivateRoute>
+            <Admin />
+          </PrivateRoute>
+        ),
       },
 
       {
