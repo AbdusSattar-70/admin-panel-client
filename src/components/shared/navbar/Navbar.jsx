@@ -1,44 +1,39 @@
-import { Link } from "react-router-dom";
 import logo from "../../../assets/logo/logo.png";
+import avatar from "../../../assets/logo/avatar.jpg";
 import { FaBars } from "react-icons/fa";
-// import { useSelector } from "react-redux";
-// import { useDispatch } from "react-redux";
-
-// import {
-//   signOutUserStart,
-//   signOutUserFailure,
-//   signOutUserSuccess,
-// } from "../../../redux/authSlice";
+import { useNavigate, Link } from "react-router-dom";
+import { useContext } from "react";
+import AuthContext from "../../../context/AuthProvider";
+import { axiosPrivate } from "../../../api/axios";
+import useAuth from "../../../hooks/useAuth";
 
 const Navbar = () => {
-  // const dispatch = useDispatch();
-  // const { currentUser } = useSelector((state) => state.auth);
-  const currentUser = "";
-  const handleSignOut = async () => {
+  const SIGN_OUT_URL = "/auth/signout";
+  const NAVIGATE_TO = "/sign-in";
+  const { setAuth } = useContext(AuthContext);
+  const { auth } = useAuth();
+  const navigate = useNavigate();
+  const currentUser = auth?.id;
+
+  const handleSignout = async () => {
     try {
-      // dispatch(signOutUserStart());
-      const res = await fetch(
-        "https://server-7v1c.onrender.com/api/auth/signout"
-      );
-      const data = await res.json();
-      if (data.success === false) {
-        // dispatch(signOutUserFailure(data.message));
-        return;
-      }
-      // dispatch(signOutUserSuccess(data));
+      await axiosPrivate.get(SIGN_OUT_URL);
+      setAuth({});
+      navigate(NAVIGATE_TO);
     } catch (error) {
-      // dispatch(signOutUserFailure(error));
+      console.log(error);
     }
   };
+
   const navItems = (
     <>
       <li>
         <Link to="/"> Home</Link>
       </li>
       <li>
-        <Link to="/under construction" className="justify-between">
+        <Link to="/admin-panel" className="justify-between">
           Admin Panel
-          <span className="badge">NEW</span>
+          <span className="badge text-purple-500">NEW</span>
         </Link>
       </li>
     </>
@@ -74,7 +69,7 @@ const Navbar = () => {
           <div className="dropdown dropdown-end">
             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
               <div className="w-10 rounded-full">
-                <img src={currentUser?.data?.avatar} />
+                <img src={avatar} />
               </div>
             </label>
             <ul
@@ -83,7 +78,7 @@ const Navbar = () => {
             >
               <li>
                 <button
-                  onClick={handleSignOut}
+                  onClick={handleSignout}
                   className="text-red-700 cursor-pointer"
                 >
                   Sign out

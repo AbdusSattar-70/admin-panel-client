@@ -1,6 +1,6 @@
 import { Outlet, useHref } from "react-router-dom";
-import Footer from "../pages/shared/footer/Footer";
-import Navbar from "../pages/shared/navbar/Navbar";
+import Footer from "../components/shared/footer/Footer";
+import Navbar from "../components/shared/navbar/Navbar";
 
 const Root = () => {
   const route = useHref();
