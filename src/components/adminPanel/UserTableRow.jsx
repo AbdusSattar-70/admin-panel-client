@@ -21,10 +21,11 @@ const UserTableRow = ({
     new Date(registrationTime),
     "yyyy-MM-dd HH:mm:ss"
   );
-  const formattedLastLoginTime = format(
-    new Date(lastLoginTime),
-    "yyyy-MM-dd HH:mm:ss"
-  );
+
+  // Check if lastLoginTime is not an empty string before formatting
+  const formattedLastLoginTime = lastLoginTime
+    ? format(new Date(lastLoginTime), "yyyy-MM-dd HH:mm:ss")
+    : "Not yet logged in";
 
   const truncatedId = id.substring(id.length - 4); // Get the last 4 characters of id
 
@@ -68,7 +69,10 @@ UserTableRow.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   registrationTime: PropTypes.string.isRequired,
-  lastLoginTime: PropTypes.string.isRequired,
+  lastLoginTime: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.oneOf([null]),
+  ]).isRequired,
   status: PropTypes.string.isRequired,
   selectedUsers: PropTypes.array.isRequired,
   handleCheckboxChange: PropTypes.func.isRequired,

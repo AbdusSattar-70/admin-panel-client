@@ -1,8 +1,6 @@
 import PropTypes from "prop-types";
 
 const UserTableHeader = ({ handleCheckboxChange, ALL_USER_ID, selectAll }) => {
-  console.log("calling from header");
-
   return (
     <thead className="text-xs text-white uppercase bg-blue-600 border-b border-blue-400 dark:text-white">
       <tr>

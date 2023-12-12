@@ -66,6 +66,7 @@ const SignIn = () => {
             <h1 className="text-3xl text-center mt-2 font-bold">
               Sign In now!
             </h1>
+            <h2 className="text-xl text-center mt-2">Good to see you again!</h2>
             <form onSubmit={handleSubmit} className="card-body">
               <div className="form-control">
                 <label htmlFor="email"></label>

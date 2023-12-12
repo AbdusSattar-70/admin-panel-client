@@ -1,8 +1,6 @@
 import PropTypes from "prop-types";
 
 const UserTableCheckbox = ({ id, selectedUsers, handleCheckboxChange }) => {
-  console.log("calling from checkbox");
-
   return (
     <td className="w-4 p-4">
       <div className="flex items-center">
