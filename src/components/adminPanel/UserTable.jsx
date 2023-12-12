@@ -9,8 +9,6 @@ const UserTable = ({
   ALL_USER_ID,
   selectAll,
 }) => {
-  console.log("calling from table");
-
   return (
     <table className="w-full text-sm text-left rtl:text-right text-blue-100 dark:text-blue-100">
       <UserTableHeader
