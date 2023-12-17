@@ -143,7 +143,7 @@ const Users = () => {
 
       <ToastContainer
         position="bottom-right"
-        autoClose={3000}
+        autoClose={5000}
         hideProgressBar
       />
     </section>

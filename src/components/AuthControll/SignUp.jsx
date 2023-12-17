@@ -10,7 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "../../api/axios";
 
-const USER_REGEX = /^[A-Za-z][A-Za-z0-9_ -]{3,23}$/;
+const USER_REGEX = /^[A-Za-z][A-Za-z0-9_ -]{0,23}$/;
 const PWD_REGEX = /.{1,}/;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const REGISTER_URL = "/auth/signup";
@@ -119,7 +119,7 @@ const SignUp = () => {
             <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
               <ToastContainer
                 position="bottom-right"
-                autoClose={3000}
+                autoClose={5000}
                 hideProgressBar
               />
               <p
@@ -169,7 +169,7 @@ const SignUp = () => {
                         : "hidden"
                     }`}
                   >
-                    <FontAwesomeIcon icon={faInfoCircle} />4 to 24 characters.
+                    <FontAwesomeIcon icon={faInfoCircle} />1 to 24 characters.
                     Must begin with a letter. Letters, numbers, underscores,
                     hyphens allowed.
                   </p>
