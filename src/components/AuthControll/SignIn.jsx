@@ -48,7 +48,7 @@ const SignIn = () => {
       } else if (err.response?.status === 401) {
         toast.error("Unauthorized");
       } else {
-        toast.error("Login Failed");
+        toast.error("Login Failed, Please Try again");
       }
     }
   };
@@ -60,7 +60,7 @@ const SignIn = () => {
           <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
             <ToastContainer
               position="bottom-right"
-              autoClose={3000}
+              autoClose={5000}
               hideProgressBar
             />
             <h1 className="text-3xl text-center mt-2 font-bold">
