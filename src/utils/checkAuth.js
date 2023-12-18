@@ -15,7 +15,7 @@
   if (emptyAuth) return false;
 
   const adminUser = users.find(
-    (user) => user._id === auth.id && user.status === USER_STATUS.Admin
+    (user) => user._id === auth.id && user.status === USER_STATUS.Active
   );
 
   return !!adminUser;
