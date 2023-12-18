@@ -7,7 +7,6 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import axios from "../../api/axios";
 
 const USER_REGEX = /^[A-Za-z][A-Za-z0-9_ -]{0,23}$/;
@@ -154,7 +153,7 @@ const SignUp = () => {
                     onChange={(e) => setUser(e.target.value)}
                     value={user}
                     required
-                    placeholder="Name"
+                    placeholder="Enter Your Name"
                     className="input input-bordered"
                     aria-invalid={validName ? "false" : "true"}
                     aria-describedby="uidnote"
@@ -191,7 +190,7 @@ const SignUp = () => {
                     type="text"
                     id="email"
                     autoComplete="off"
-                    placeholder="email"
+                    placeholder="What's Your Email?"
                     className="input input-bordered"
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}

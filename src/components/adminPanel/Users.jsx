@@ -53,6 +53,7 @@ const Users = () => {
       if (confirmResult) {
         await axiosPrivate.patch(USER_BLOCK_URL, { userIds: selectedUsers });
         getUsers();
+        setSelectedUsers([]);
         if (verifyNotAdmin(auth, users)) {
           setAuth({});
         }
@@ -76,6 +77,7 @@ const Users = () => {
       if (confirmResult) {
         await axiosPrivate.patch(USER_UNBLOCK_URL, { userIds: selectedUsers });
         getUsers();
+        setSelectedUsers([]);
         if (verifyNotAdmin(auth, users)) {
           setAuth({});
         }
@@ -101,6 +103,7 @@ const Users = () => {
           data: { userIds: selectedUsers },
         });
         getUsers();
+        setSelectedUsers([]);
         if (verifyNotAdmin(auth, users)) {
           setAuth({});
         }
