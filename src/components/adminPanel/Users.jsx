@@ -6,8 +6,10 @@ import useAuth from "../../hooks/useAuth";
 import UserTableActions from "./UserTableActions";
 import UserTable from "./UserTable";
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Users = () => {
+  const navigate = useNavigate();
   const ALL_USER_ID = "all";
   const USER_BLOCK_URL = "/admin/block";
   const USER_UNBLOCK_URL = "/admin/active";
@@ -53,9 +55,11 @@ const Users = () => {
       if (confirmResult) {
         await axiosPrivate.patch(USER_BLOCK_URL, { userIds: selectedUsers });
         getUsers();
+        const isNotAdmin = await verifyNotAdmin(auth, users);
         setSelectedUsers([]);
-        if (verifyNotAdmin(auth, users)) {
+        if (isNotAdmin) {
           setAuth({});
+          navigate("/home");
         }
         toast.success("Users blocked successfully.");
       }
@@ -78,9 +82,6 @@ const Users = () => {
         await axiosPrivate.patch(USER_UNBLOCK_URL, { userIds: selectedUsers });
         getUsers();
         setSelectedUsers([]);
-        if (verifyNotAdmin(auth, users)) {
-          setAuth({});
-        }
         toast.success("Users unblocked successfully.");
       }
     } catch (error) {
@@ -103,9 +104,11 @@ const Users = () => {
           data: { userIds: selectedUsers },
         });
         getUsers();
+        const isNotAdmin = await verifyNotAdmin(auth, users);
         setSelectedUsers([]);
-        if (verifyNotAdmin(auth, users)) {
+        if (isNotAdmin) {
           setAuth({});
+          navigate("/home");
         }
         toast.success("Users deleted successfully.");
       }

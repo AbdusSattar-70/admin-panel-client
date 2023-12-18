@@ -10,7 +10,7 @@
     return auth.status === status;
   };
 
-  export const verifyNotAdmin = (auth, users) => {
+  export const verifyNotAdmin = async (auth, users) => {
     const emptyAuth = Object.keys(auth).length === 0;
     if (emptyAuth) return false;
     const isAdmin = users.find(
