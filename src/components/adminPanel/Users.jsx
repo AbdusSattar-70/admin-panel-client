@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useGetUserData from "../../hooks/useFetchUserData";
-import { isAdmin } from "../../utils/checkAuth";
+import { isNotAdmin } from "../../utils/checkAuth";
 import useAuth from "../../hooks/useAuth";
 import UserTableActions from "./UserTableActions";
 import UserTable from "./UserTable";
 import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
 const Users = () => {
-  const navigate = useNavigate();
   const ALL_USER_ID = "all";
   const USER_BLOCK_URL = "/admin/block";
   const USER_UNBLOCK_URL = "/admin/active";
@@ -56,11 +54,9 @@ const Users = () => {
         await axiosPrivate.patch(USER_BLOCK_URL, { userIds: selectedUsers });
         getUsers();
         setSelectedUsers([]);
-        const isAdminUser = await isAdmin(auth, users);
-
-        if (!isAdminUser) {
+        const notAdmin = await isNotAdmin(auth, users);
+        if (notAdmin) {
           setAuth({});
-          navigate("/");
         }
 
         toast.success("Users blocked successfully.");
@@ -102,10 +98,9 @@ const Users = () => {
         });
         getUsers();
         setSelectedUsers([]);
-        const Admin = await isAdmin(auth, users);
-        if (!Admin) {
+        const notAdmin = await isNotAdmin(auth, users);
+        if (notAdmin) {
           setAuth({});
-          navigate("/");
         }
         toast.success("Users deleted successfully.");
       }
