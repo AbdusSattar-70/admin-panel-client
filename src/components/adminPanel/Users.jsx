@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useGetUserData from "../../hooks/useFetchUserData";
-import { verifyNotAdmin } from "../../utils/checkAuth";
+import { isAdmin } from "../../utils/checkAuth";
 import useAuth from "../../hooks/useAuth";
 import UserTableActions from "./UserTableActions";
 import UserTable from "./UserTable";
@@ -55,12 +55,14 @@ const Users = () => {
       if (confirmResult) {
         await axiosPrivate.patch(USER_BLOCK_URL, { userIds: selectedUsers });
         getUsers();
-        const isNotAdmin = await verifyNotAdmin(auth, users);
         setSelectedUsers([]);
-        if (isNotAdmin) {
+        const isAdminUser = await isAdmin(auth, users);
+
+        if (!isAdminUser) {
           setAuth({});
-          navigate("/home");
+          navigate("/");
         }
+
         toast.success("Users blocked successfully.");
       }
     } catch (error) {
@@ -75,15 +77,10 @@ const Users = () => {
         return;
       }
 
-      const confirmResult = window.confirm(
-        "Are you sure you want to unblock selected users?"
-      );
-      if (confirmResult) {
-        await axiosPrivate.patch(USER_UNBLOCK_URL, { userIds: selectedUsers });
-        getUsers();
-        setSelectedUsers([]);
-        toast.success("Users unblocked successfully.");
-      }
+      await axiosPrivate.patch(USER_UNBLOCK_URL, { userIds: selectedUsers });
+      getUsers();
+      setSelectedUsers([]);
+      toast.success("Users unblocked successfully.");
     } catch (error) {
       toast.error("Error unblocking users. Please try again.");
     }
@@ -104,11 +101,11 @@ const Users = () => {
           data: { userIds: selectedUsers },
         });
         getUsers();
-        const isNotAdmin = await verifyNotAdmin(auth, users);
         setSelectedUsers([]);
-        if (isNotAdmin) {
+        const Admin = await isAdmin(auth, users);
+        if (!Admin) {
           setAuth({});
-          navigate("/home");
+          navigate("/");
         }
         toast.success("Users deleted successfully.");
       }
