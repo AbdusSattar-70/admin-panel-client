@@ -10,11 +10,13 @@
     return auth.status === status;
   };
 
-  export const verifyNotAdmin = async (auth, users) => {
-    const emptyAuth = Object.keys(auth).length === 0;
-    if (emptyAuth) return false;
-    const isAdmin = users.find(
-      (user) => user._id === auth.id && user.status !== USER_STATUS.Blocked);
+  export const isAdmin = async (auth, users) => {
+  const emptyAuth = Object.keys(auth).length === 0;
+  if (emptyAuth) return false;
 
-    return !isAdmin;
-  };
+  const adminUser = users.find(
+    (user) => user._id === auth.id && user.status === USER_STATUS.Admin
+  );
+
+  return !!adminUser;
+};

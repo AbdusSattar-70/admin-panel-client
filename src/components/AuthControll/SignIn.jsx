@@ -2,7 +2,6 @@ import { useRef, useState, useEffect } from "react";
 import useAuth from "../../hooks/useAuth";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 import axios from "../../api/axios";
 const LOGIN_URL = "/auth/signin";
@@ -44,8 +43,8 @@ const SignIn = () => {
       if (!err?.response) {
         toast.error("No Server Response");
       } else if (err.response?.status === 400) {
-        toast.error("Missing Username or Password");
-      } else if (err.response?.status === 401) {
+        toast.error(`${err?.response?.data?.message || "Unauthorized"}`);
+      } else if (err.response?.status === 404) {
         toast.error("Unauthorized");
       } else {
         toast.error("Login Failed, Please Try again");
