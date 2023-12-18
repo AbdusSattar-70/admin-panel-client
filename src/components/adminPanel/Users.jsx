@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useGetUserData from "../../hooks/useFetchUserData";
-import { isNotAdmin } from "../../utils/checkAuth";
 import useAuth from "../../hooks/useAuth";
 import UserTableActions from "./UserTableActions";
 import UserTable from "./UserTable";
@@ -40,6 +39,13 @@ const Users = () => {
     });
   };
 
+  const verifyAdminStatus = () => {
+    const admin = selectedUsers.includes(auth.id);
+    if (admin) {
+      setAuth({});
+    }
+  };
+
   const handleBlock = async () => {
     try {
       if (selectedUsers.length === 0) {
@@ -53,12 +59,8 @@ const Users = () => {
       if (confirmResult) {
         await axiosPrivate.patch(USER_BLOCK_URL, { userIds: selectedUsers });
         getUsers();
+        verifyAdminStatus();
         setSelectedUsers([]);
-        const notAdmin = await isNotAdmin(auth, users);
-        if (notAdmin) {
-          setAuth({});
-        }
-
         toast.success("Users blocked successfully.");
       }
     } catch (error) {
@@ -96,12 +98,10 @@ const Users = () => {
         await axiosPrivate.delete(USER_DELETE_URL, {
           data: { userIds: selectedUsers },
         });
+
         getUsers();
+        verifyAdminStatus();
         setSelectedUsers([]);
-        const notAdmin = await isNotAdmin(auth, users);
-        if (notAdmin) {
-          setAuth({});
-        }
         toast.success("Users deleted successfully.");
       }
     } catch (error) {

@@ -9,14 +9,3 @@
     if (emptyAuth) return false;
     return auth.status === status;
   };
-
-  export const isNotAdmin = async (auth, users) => {
-  const emptyAuth = Object.keys(auth).length === 0;
-  if (emptyAuth) return false;
-
-  const adminUser = users.find(
-    (user) => user._id === auth.id && user.status === USER_STATUS.Active
-  );
-
-  return !!adminUser;
-};
